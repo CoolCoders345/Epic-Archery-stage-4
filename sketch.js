@@ -7,7 +7,8 @@ var engine, world;
 var canvas;
 var palyer, playerBase;
 var computer, computerBase;
-
+var playerLife = 3
+var computerLife = 3
 //Declare an array for arrows playerArrows = [ ]
 var playerArrows = [];
 var computerArrows = []
@@ -73,10 +74,12 @@ function draw() {
   playerBase.display();
   player.display();
   
-
+player.reduceLife()
+computer.reduceLife(archerLife)
   computerBase.display();
   computer.display();
-  
+  player.life()
+  computer.life()
   playerArcher.display();
   computerArcher.display()
 
@@ -126,6 +129,16 @@ function keyReleased () {
 //Display arrow and Tranjectory
 function showArrows(index, arrows) {
   arrows[index].display();
+  if(
+    arrows[index].body.position.x>width||
+    arrows[index].body.position.y>height
+  ){
+    if(!arrows[index].isRemoved){
+      arrows[index].remove(index, arrows)
+    }else{
+      arrows[index].trajectory = []
+    }
+  }
 }
 
 function handleComputerArcher() {
@@ -161,6 +174,8 @@ function handleComputerArcher() {
 
 function handlePlayerArrowCollision() {
 // Write code to detect collision between player arrow and opponent
+var playArcherLife=3
+var computerArcherLife = 3
 for (var i = 0; i < playerArrows.length; i++){
 var baseCollision = Matter.SAT.collides(
   playerArrows[i].body, 
@@ -184,6 +199,8 @@ if(
 }
 function handleComputerArrowCollision() {
   //Write code to detect collision between computer arrow and opponent
+  var playArcherLife=3
+  var computerArcherLife = 3
   for (var i = 0; i < computerArrows.length; i++){
     var baseCollision = Matter.SAT.collides(
       computerArrows[i].body, 
@@ -203,6 +220,4 @@ function handleComputerArrowCollision() {
       ){
         console.lof("computer Arrow Collided")
       }
-    }
-}
-
+    }}
